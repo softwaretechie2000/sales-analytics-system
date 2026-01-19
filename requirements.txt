@@ -1,0 +1,7 @@
+# Sales Analytics System Requirements
+# This project uses only Python standard library, so no external dependencies are required
+# Python Version: 3.6+
+
+# Optional: For future enhancements with real API integration
+# requests>=2.28.0
+# python-dotenv>=0.19.0
