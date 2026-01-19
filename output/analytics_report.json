@@ -1,84 +1,84 @@
 {
-  "timestamp": "2026-01-19T15:09:07.771427",
+  "timestamp": "2026-01-19T15:11:12.811119",
   "data_validation": {
     "total_input": 80,
     "invalid_records": 9,
     "valid_records": 71,
-    "final_count": 7
+    "final_count": 5
   },
   "statistics": {
-    "total_sales": 37768.0,
-    "total_transactions": 7,
-    "average_transaction_value": 5395.428571428572,
-    "total_quantity_sold": 51,
-    "num_unique_customers": 6,
-    "num_unique_products": 4,
+    "total_sales": 15162.0,
+    "total_transactions": 5,
+    "average_transaction_value": 3032.4,
+    "total_quantity_sold": 28,
+    "num_unique_customers": 5,
+    "num_unique_products": 3,
     "num_unique_regions": 1
   },
   "sales_by_region": {
-    "East": {
-      "total_sales": 37768.0,
-      "transaction_count": 7,
+    "West": {
+      "total_sales": 15162.0,
+      "transaction_count": 5,
       "percentage": 100.0
     }
   },
   "top_5_products": [
     {
-      "name": "Wireless MouseGaming",
-      "quantity": 17,
-      "revenue": 15923.0
+      "name": "Wireless Mouse",
+      "quantity": 9,
+      "revenue": 6356.0
     },
     {
       "name": "Mouse",
-      "quantity": 16,
-      "revenue": 9048.0
+      "quantity": 9,
+      "revenue": 4302.0
     },
     {
       "name": "USB Cable",
-      "quantity": 14,
-      "revenue": 3145.0
+      "quantity": 6,
+      "revenue": 1944.0
     },
     {
-      "name": "Webcam",
+      "name": "MouseWireless",
       "quantity": 4,
-      "revenue": 9652.0
+      "revenue": 2560.0
     }
   ],
   "top_5_customers": [
     {
-      "id": "C013",
-      "total_spent": 9652.0,
+      "id": "C019",
+      "total_spent": 4302.0,
       "orders": 1
     },
     {
-      "id": "C005",
-      "total_spent": 9387.0,
+      "id": "C015",
+      "total_spent": 3336.0,
       "orders": 1
     },
     {
-      "id": "C007",
-      "total_spent": 7431.0,
-      "orders": 2
-    },
-    {
-      "id": "C009",
-      "total_spent": 5562.0,
+      "id": "C003",
+      "total_spent": 3020.0,
       "orders": 1
     },
     {
-      "id": "C012",
-      "total_spent": 3486.0,
+      "id": "C014",
+      "total_spent": 2560.0,
+      "orders": 1
+    },
+    {
+      "id": "C029",
+      "total_spent": 1944.0,
       "orders": 1
     }
   ],
   "peak_sales_day": {
-    "date": "2024-12-03",
-    "revenue": 15388.0,
-    "transactions": 3
+    "date": "2024-12-22",
+    "revenue": 6246.0,
+    "transactions": 2
   },
-  "low_performers_count": 1,
+  "low_performers_count": 4,
   "api_enrichment": {
-    "total_enriched": 7,
+    "total_enriched": 5,
     "matched": 0,
     "success_rate": 0.0
   }
