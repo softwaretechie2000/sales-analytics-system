@@ -33,7 +33,6 @@ env/
 *~
 
 # Output files (generated at runtime)
-output/
 data/enriched_sales_data.txt
 
 # OS
