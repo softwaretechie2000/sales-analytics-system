@@ -1,0 +1,85 @@
+{
+  "timestamp": "2026-01-19T15:09:07.771427",
+  "data_validation": {
+    "total_input": 80,
+    "invalid_records": 9,
+    "valid_records": 71,
+    "final_count": 7
+  },
+  "statistics": {
+    "total_sales": 37768.0,
+    "total_transactions": 7,
+    "average_transaction_value": 5395.428571428572,
+    "total_quantity_sold": 51,
+    "num_unique_customers": 6,
+    "num_unique_products": 4,
+    "num_unique_regions": 1
+  },
+  "sales_by_region": {
+    "East": {
+      "total_sales": 37768.0,
+      "transaction_count": 7,
+      "percentage": 100.0
+    }
+  },
+  "top_5_products": [
+    {
+      "name": "Wireless MouseGaming",
+      "quantity": 17,
+      "revenue": 15923.0
+    },
+    {
+      "name": "Mouse",
+      "quantity": 16,
+      "revenue": 9048.0
+    },
+    {
+      "name": "USB Cable",
+      "quantity": 14,
+      "revenue": 3145.0
+    },
+    {
+      "name": "Webcam",
+      "quantity": 4,
+      "revenue": 9652.0
+    }
+  ],
+  "top_5_customers": [
+    {
+      "id": "C013",
+      "total_spent": 9652.0,
+      "orders": 1
+    },
+    {
+      "id": "C005",
+      "total_spent": 9387.0,
+      "orders": 1
+    },
+    {
+      "id": "C007",
+      "total_spent": 7431.0,
+      "orders": 2
+    },
+    {
+      "id": "C009",
+      "total_spent": 5562.0,
+      "orders": 1
+    },
+    {
+      "id": "C012",
+      "total_spent": 3486.0,
+      "orders": 1
+    }
+  ],
+  "peak_sales_day": {
+    "date": "2024-12-03",
+    "revenue": 15388.0,
+    "transactions": 3
+  },
+  "low_performers_count": 1,
+  "api_enrichment": {
+    "total_enriched": 7,
+    "matched": 0,
+    "success_rate": 0.0
+  }
+}
