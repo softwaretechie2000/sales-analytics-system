@@ -14,13 +14,8 @@ from typing import List, Dict, Any, Tuple, Optional, Set
 from datetime import datetime
 from collections import defaultdict
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# =====================================================
-# Constants
-# =====================================================
 
 MIN_REQUIRED_FIELDS = 8
 TRANSACTION_ID_PREFIX = 'T'
@@ -51,23 +46,16 @@ def clean_sales_data(raw_data: List[str]) -> Tuple[List[Dict[str, Any]], int, in
     
     for line in raw_data:
         line = line.strip()
-        
-        # Skip empty lines and header
         if not line or line.startswith('TransactionID'):
             continue
         
         total_count += 1
-        
-        # Split by pipe
         fields = line.split('|')
-        
-        # Check if we have correct number of fields
         if len(fields) < MIN_REQUIRED_FIELDS:
             invalid_count += 1
             continue
         
         try:
-            # Extract fields
             transaction_id = fields[0].strip()
             date = fields[1].strip()
             product_id = fields[2].strip()
@@ -77,43 +65,30 @@ def clean_sales_data(raw_data: List[str]) -> Tuple[List[Dict[str, Any]], int, in
             customer_id = fields[6].strip()
             region = fields[7].strip()
             
-            # Validation: TransactionID must start with prefix
             if not transaction_id.startswith(TRANSACTION_ID_PREFIX):
                 invalid_count += 1
                 continue
-            
-            # Validation: CustomerID must not be empty
             if not customer_id:
                 invalid_count += 1
                 continue
-            
-            # Validation: Region must not be empty
             if not region:
                 invalid_count += 1
                 continue
             
-            # Clean quantity: convert and validate
             quantity_str = quantity_str.replace(',', '')
             quantity = int(quantity_str)
-            
-            # Validation: Quantity must be > 0
             if quantity <= 0:
                 invalid_count += 1
                 continue
             
-            # Clean unit price: convert and validate
             unit_price_str = unit_price_str.replace(',', '')
             unit_price = float(unit_price_str)
-            
-            # Validation: UnitPrice must be > 0
             if unit_price <= 0:
                 invalid_count += 1
                 continue
             
-            # Clean product name: remove commas
             product_name = product_name.replace(',', '')
             
-            # Record is valid, add to cleaned data
             cleaned_record = {
                 'TransactionID': transaction_id,
                 'Date': date,
@@ -269,10 +244,6 @@ def calculate_statistics(records: List[Dict[str, Any]]) -> Optional[Dict[str, An
     }
 
 
-# =====================================================
-# Sales Summary Calculator
-# =====================================================
-
 def calculate_total_revenue(transactions: List[Dict[str, Any]]) -> float:
     """
     Calculates total revenue from all transactions.
@@ -300,19 +271,16 @@ def region_wise_sales(transactions: List[Dict[str, Any]]) -> Dict[str, Dict[str,
     total_revenue = calculate_total_revenue(transactions)
     region_stats = defaultdict(lambda: {'total_sales': 0.0, 'transaction_count': 0})
     
-    # Aggregate by region
     for transaction in transactions:
         region = transaction['Region']
         sales = transaction['Quantity'] * transaction['UnitPrice']
         region_stats[region]['total_sales'] += sales
         region_stats[region]['transaction_count'] += 1
     
-    # Calculate percentages
     for region in region_stats:
         percentage = (region_stats[region]['total_sales'] / total_revenue * 100) if total_revenue > 0 else 0
         region_stats[region]['percentage'] = round(percentage, 2)
     
-    # Sort by total_sales descending
     return dict(sorted(
         region_stats.items(),
         key=lambda x: x[1]['total_sales'],
@@ -334,7 +302,6 @@ def top_selling_products(transactions: List[Dict[str, Any]], n: int = 5) -> List
     """
     product_stats = defaultdict(lambda: {'total_quantity': 0, 'total_revenue': 0.0})
     
-    # Aggregate by ProductName
     for transaction in transactions:
         product_name = transaction['ProductName']
         quantity = transaction['Quantity']
@@ -342,13 +309,11 @@ def top_selling_products(transactions: List[Dict[str, Any]], n: int = 5) -> List
         product_stats[product_name]['total_quantity'] += quantity
         product_stats[product_name]['total_revenue'] += revenue
     
-    # Convert to list and sort by quantity descending
     product_list = [
         (name, stats['total_quantity'], stats['total_revenue'])
         for name, stats in product_stats.items()
     ]
     product_list.sort(key=lambda x: x[1], reverse=True)
-    
     return product_list[:n]
 
 
@@ -370,7 +335,6 @@ def customer_analysis(transactions: List[Dict[str, Any]]) -> Dict[str, Dict[str,
         'products_bought': set()
     })
     
-    # Aggregate by CustomerID
     for transaction in transactions:
         customer_id = transaction['CustomerID']
         amount_spent = transaction['Quantity'] * transaction['UnitPrice']
@@ -378,7 +342,6 @@ def customer_analysis(transactions: List[Dict[str, Any]]) -> Dict[str, Dict[str,
         customer_stats[customer_id]['purchase_count'] += 1
         customer_stats[customer_id]['products_bought'].add(transaction['ProductName'])
     
-    # Calculate average order value and convert sets to lists
     for stats in customer_stats.values():
         stats['avg_order_value'] = round(
             stats['total_spent'] / stats['purchase_count'],
@@ -386,17 +349,12 @@ def customer_analysis(transactions: List[Dict[str, Any]]) -> Dict[str, Dict[str,
         )
         stats['products_bought'] = sorted(list(stats['products_bought']))
     
-    # Sort by total_spent descending
     return dict(sorted(
         customer_stats.items(),
         key=lambda x: x[1]['total_spent'],
         reverse=True
     ))
 
-
-# =====================================================
-# Date-based Analysis
-# =====================================================
 
 def daily_sales_trend(transactions: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     """
@@ -416,7 +374,6 @@ def daily_sales_trend(transactions: List[Dict[str, Any]]) -> Dict[str, Dict[str,
         'unique_customers': set()
     })
     
-    # Aggregate by date
     for transaction in transactions:
         date = transaction['Date']
         revenue = transaction['Quantity'] * transaction['UnitPrice']
@@ -424,11 +381,9 @@ def daily_sales_trend(transactions: List[Dict[str, Any]]) -> Dict[str, Dict[str,
         daily_stats[date]['transaction_count'] += 1
         daily_stats[date]['unique_customers'].add(transaction['CustomerID'])
     
-    # Convert sets to counts
     for stats in daily_stats.values():
         stats['unique_customers'] = len(stats['unique_customers'])
     
-    # Sort chronologically by date
     return dict(sorted(daily_stats.items()))
 
 
@@ -443,18 +398,11 @@ def find_peak_sales_day(transactions: List[Dict[str, Any]]) -> Optional[Tuple[st
         Tuple of (date, revenue, transaction_count) for peak day, or None if empty.
     """
     daily_sales = daily_sales_trend(transactions)
-    
     if not daily_sales:
         return None
-    
-    # Find the date with maximum revenue
     date, stats = max(daily_sales.items(), key=lambda x: x[1]['revenue'])
     return (date, stats['revenue'], stats['transaction_count'])
 
-
-# =====================================================
-# Product Performance
-# =====================================================
 
 def low_performing_products(
     transactions: List[Dict[str, Any]],
@@ -473,7 +421,6 @@ def low_performing_products(
     """
     product_stats = defaultdict(lambda: {'total_quantity': 0, 'total_revenue': 0.0})
     
-    # Aggregate by ProductName
     for transaction in transactions:
         product_name = transaction['ProductName']
         quantity = transaction['Quantity']
@@ -481,20 +428,14 @@ def low_performing_products(
         product_stats[product_name]['total_quantity'] += quantity
         product_stats[product_name]['total_revenue'] += revenue
     
-    # Filter by threshold and convert to list
     product_list = [
         (name, stats['total_quantity'], stats['total_revenue'])
         for name, stats in product_stats.items()
         if stats['total_quantity'] < threshold
     ]
     product_list.sort(key=lambda x: x[1])
-    
     return product_list
 
-
-# =====================================================
-# Report Generation
-# =====================================================
 
 def generate_sales_report(
     transactions: List[Dict[str, Any]],
@@ -520,14 +461,12 @@ def generate_sales_report(
     
     try:
         with open(output_file, 'w', encoding='utf-8') as f:
-            # Calculate common data
             total_revenue = calculate_total_revenue(transactions)
             total_transactions = len(transactions)
             avg_order_value = total_revenue / total_transactions if total_transactions > 0 else 0
             dates = sorted([t['Date'] for t in transactions])
             date_range = f"{dates[0]} to {dates[-1]}" if dates else "N/A"
             
-            # Write report sections
             _write_report_header(f, total_transactions)
             _write_overall_summary(f, total_revenue, total_transactions, avg_order_value, date_range)
             _write_region_performance(f, transactions)
@@ -537,7 +476,6 @@ def generate_sales_report(
             _write_product_performance_section(f, transactions)
             _write_api_enrichment_summary(f, enriched_transactions)
             
-            # Write footer
             f.write("\n" + "=" * REPORT_LINE_WIDTH + "\n")
             f.write("END OF REPORT\n")
             f.write("=" * REPORT_LINE_WIDTH + "\n")
@@ -645,7 +583,6 @@ def _write_product_performance_section(f: Any, transactions: List[Dict[str, Any]
         for product_name, qty, revenue in low_performers[:5]:
             f.write(f"  - {product_name}: {qty} units (${revenue:,.2f})\n")
     
-    # Calculate average transaction value per region
     f.write("\nAverage Transaction Value per Region:\n")
     for region, stats in regions.items():
         region_display = region if region else "(Unknown)"
@@ -676,7 +613,6 @@ def _write_api_enrichment_summary(
         for tx in enriched_transactions:
             if not tx.get('API_Match', False):
                 unmatched_products.add(tx.get('ProductID', 'Unknown'))
-        
         if unmatched_products:
             f.write(f"\nProducts Not Enriched ({len(unmatched_products)} products):\n")
             for product_id in sorted(list(unmatched_products))[:10]:
