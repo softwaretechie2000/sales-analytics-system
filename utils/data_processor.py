@@ -21,7 +21,6 @@ MIN_REQUIRED_FIELDS = 8
 TRANSACTION_ID_PREFIX = 'T'
 DEFAULT_TOP_N = 10
 DEFAULT_LOW_PRODUCT_THRESHOLD = 10
-DEFAULT_OUTPUT_FILE = 'output/sales_report.txt'
 REPORT_LINE_WIDTH = 60
 
 def clean_sales_data(raw_data: List[str]) -> Tuple[List[Dict[str, Any]], int, int]:
@@ -440,7 +439,7 @@ def low_performing_products(
 def generate_sales_report(
     transactions: List[Dict[str, Any]],
     enriched_transactions: Optional[List[Dict[str, Any]]] = None,
-    output_file: str = DEFAULT_OUTPUT_FILE
+    output_file: str = None
 ) -> bool:
     """
     Generates a comprehensive formatted text sales report.
@@ -451,12 +450,12 @@ def generate_sales_report(
     Args:
         transactions: List of cleaned transaction dictionaries.
         enriched_transactions: Optional list of enriched transaction dictionaries.
-        output_file: Output file path. Defaults to DEFAULT_OUTPUT_FILE.
+        output_file: Output file path (required).
     
     Returns:
         True if report generated successfully, False otherwise.
     """
-    if not transactions:
+    if not transactions or output_file is None:
         return False
     
     try:

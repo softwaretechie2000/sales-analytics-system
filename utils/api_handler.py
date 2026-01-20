@@ -20,7 +20,6 @@ API_BASE_URL = 'https://dummyjson.com/products'
 API_PRODUCT_LIMIT = 100
 API_TIMEOUT_SECONDS = 10
 PRODUCT_ID_PREFIX = 'P'
-ENRICHED_DATA_FILENAME = 'data/enriched_sales_data.txt'
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -192,14 +191,14 @@ def _add_api_fields(
 
 def save_enriched_data(
     enriched_transactions: List[Dict[str, Any]],
-    filename: str = ENRICHED_DATA_FILENAME
+    filename: str
 ) -> bool:
     """
     Saves enriched transactions to a pipe-delimited text file.
     
     Args:
         enriched_transactions: List of enriched transaction dictionaries.
-        filename: Output file path. Defaults to ENRICHED_DATA_FILENAME.
+        filename: Output file path (required).
     
     Returns:
         bool: True if save successful, False otherwise.
